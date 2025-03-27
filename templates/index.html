@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Pose Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        #video-container {
+            margin-top: 20px;
+        }
+        #exercise-select {
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Gym Pose Tracker</h1>
+
+    <label for="exercise-select">Select Exercise:</label>
+    <select id="exercise-select">
+        <option value="bicep_curl">Bicep Curl</option>
+        <option value="squat">Squat</option>
+    </select>
+    <button onclick="changeExercise()">Start</button>
+
+    <div id="video-container">
+        <img id="video-feed" src="{{ url_for('video_feed') }}" width="640" height="480">
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>
