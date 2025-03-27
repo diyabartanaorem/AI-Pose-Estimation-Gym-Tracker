@@ -7,6 +7,7 @@ app = Flask(__name__)
 cap = cv2.VideoCapture(0)
 selected_exercise = "bicep_curl"
 
+
 def process_video():
     global selected_exercise
     exercise_module = importlib.import_module(selected_exercise)  # Dynamically load module
