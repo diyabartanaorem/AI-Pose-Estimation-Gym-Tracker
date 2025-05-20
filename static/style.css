@@ -1,0 +1,178 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora&display=swap');
+
+body 
+{
+    text-align: center;
+    background-color: rgb(33, 33, 33);
+    color: white;    
+    font-family: 'Sora', sans-serif;
+}
+.heading{
+  font-size: 5rem;
+  font-weight: bold;
+}
+.sub-heading{
+  font-size: 2rem;
+}
+
+.exercise-select-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapper{
+  display: flex;
+  justify-content: center; /* center the container horizontally */
+  margin-top: 20px;  
+}
+label{
+  font-weight: 500;
+  font-size: 20px;  
+}
+#video-container {
+  display: inline-block;
+    padding: 1.5rem;
+    background-color: #303030;
+    border-radius: 1rem;  
+    width: 70%;  
+    border: 1px solid rgb(101, 101, 101);
+}
+#video-feed{
+  display: block;
+  border-radius: 1rem;
+  height: auto;
+  width: 100%;
+}
+#exercise-select {
+    padding: 10px;
+    font-size: 16px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 10px;
+    cursor: pointer;
+}
+p{
+    margin: 0;    
+}
+
+
+.gradient-text {
+  display: inline-block; 
+  /* background: linear-gradient(to right, #D16BA5, #86A8E7,#5FFBF1); */
+  /* background: linear-gradient(to right, #ff6a00, #ee0979); */
+  background: linear-gradient(to right, #6d6d6d, #ffffff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.color-gradient-text {
+  display: block; 
+  /* background: linear-gradient(to right, #D16BA5, #86A8E7,#5FFBF1); */
+  /* background: linear-gradient(to right, #ff9966, #ff5e62); */
+    /* background: linear-gradient(to right, #ff6a00, #ee0979); */
+    background: linear-gradient(to right, #73ffc2, #a3acff,#e16aff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+
+/* glow button */
+.btn-donate {
+  --clr-font-main: hsla(0 0% 20% / 100);
+  --btn-bg-1: hsla(194 100% 69% / 1);
+  --btn-bg-2: hsla(217 100% 56% / 1);
+  --btn-bg-color: hsla(360 100% 100% / 1);
+  --radii: 0.5em;
+  cursor: pointer;
+  padding: 0.9em 1.4em;
+  min-width: 120px;
+  min-height: 44px;
+  font-size: var(--size, 1rem);
+  font-weight: 500;
+  transition: 0.8s;
+  background-size: 280% auto;
+  background-image: linear-gradient(
+    325deg,
+    var(--btn-bg-2) 0%,
+    var(--btn-bg-1) 55%,
+    var(--btn-bg-2) 90%
+  );
+  border: none;
+  border-radius: var(--radii);
+  color: var(--btn-bg-color);
+  box-shadow:
+    0px 0px 20px rgba(71, 184, 255, 0.5),
+    0px 5px 5px -1px rgba(58, 125, 233, 0.25),
+    inset 4px 4px 8px rgba(175, 230, 255, 0.5),
+    inset -4px -4px 8px rgba(19, 95, 216, 0.35);
+}
+
+.btn-donate:hover {
+  background-position: right top;
+}
+
+.btn-donate:is(:focus, :focus-visible, :active) {
+  outline: none;
+  box-shadow:
+    0 0 0 3px var(--btn-bg-color),
+    0 0 0 6px var(--btn-bg-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-donate {
+    transition: linear;
+  }
+}
+
+.dropdown{
+  background-color: #333333;
+  color: white;
+  /* width: 10rem; */
+  border-radius: 0.5rem;
+  padding: 0.9em 1.4em;
+}
+
+
+@media (max-width: 767px) {
+body{
+  padding: 1rem;
+} 
+.heading{
+  font-size: 3rem;
+  font-weight: bold;
+}
+.sub-heading{
+  font-size: 1rem;
+}
+label{
+  font-weight: 400;
+  font-size: 16px;  
+}
+#video-container {
+    padding: 1rem;
+}
+.exercise-select-container{
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 12px;
+}
+.dropdown{
+  width: 100%;
+}
+.btn-donate{
+  width: 100%;
+}
+}

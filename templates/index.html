@@ -3,41 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Pose Estimation Gym Tracker</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f4f4f4;
-        }
-        #video-container {
-            margin-top: 20px;
-        }
-        #exercise-select {
-            padding: 10px;
-            font-size: 16px;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            margin: 10px;
-            cursor: pointer;
-        }
-    </style>
+    <title>Gym Pose Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-    <h1>AI Pose Estimation Gym Tracker</h1>
+    <p class="color-gradient-text heading">Biomimic</p>
+    <p class="gradient-text sub-heading">AI Pose Estimation Gym Tracker</p>
+    <div style="margin-top: 3rem;">
+        <label for="exercise-select">Select Exercise:</label>
+        <div class="exercise-select-container">
+            <select class="dropdown" id="exercise-select">
+                <option value="bicep_curl">Bicep Curl</option>
+                <option value="squat">Squat</option>
+                <option value="lateral_raise">Lateral Raise</option>
+                <option value="shoulder_press">Shoulder Press</option>
+            </select>
+            <button class="btn-donate" onclick="changeExercise()">Start</button>
+        </div>
+    </div>
 
-    <label for="exercise-select">Select Exercise:</label>
-    <select id="exercise-select">
-        <option value="bicep_curl">Bicep Curl</option>
-        <option value="squat">Squat</option>
-    </select>
-    <button onclick="changeExercise()">Start</button>
-
-    <div id="video-container">
-        <img id="video-feed" src="{{ url_for('video_feed') }}" style="height: auto; width:80%">
+    <div class="wrapper">
+        <div id="video-container">
+            <img id="video-feed" src="{{ url_for('video_feed') }}">
+        </div>
     </div>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
