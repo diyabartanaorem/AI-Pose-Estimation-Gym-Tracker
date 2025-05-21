@@ -5,6 +5,13 @@ import numpy as np
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
 
+# Global variable to store rep data
+left_rep_data = {"left_counter": 0, "left_stage": None}
+right_rep_data = {"right_counter": 0, "right_stage": None}
+
+def get_reps():
+    return left_rep_data,right_rep_data
+
 def calculate_angle(a, b, c):
     a, b, c = np.array(a), np.array(b), np.array(c)
     radians = np.arctan2(c[1] - b[1], c[0] - b[0]) - np.arctan2(a[1] - b[1], a[0] - b[0])
@@ -12,6 +19,8 @@ def calculate_angle(a, b, c):
     return 360 - angle if angle > 180 else angle
 
 def process_video(cap):
+    global left_rep_data    
+    global right_rep_data        
     left_counter, right_counter = 0, 0
     left_stage, right_stage = None, None
 
@@ -56,18 +65,25 @@ def process_video(cap):
                 if left_elbow_angle>170 and left_elbow_angle<190  and left_shoulder_angle>170 and left_shoulder_angle<190 and left_stage == "Down":
                     left_stage = "Up"
                     left_counter += 1
+                left_rep_data["left_counter"] = left_counter
+                left_rep_data["left_stage"] = left_stage                
 
                 if right_elbow_angle>80 and right_elbow_angle<100  and right_shoulder_angle>80 and right_shoulder_angle<100:
                     right_stage = "Down"
                 if left_elbow_angle>170 and left_elbow_angle<190  and left_shoulder_angle>170 and left_shoulder_angle<190 and right_stage== "Down":
                     right_stage = "Up"
                     right_counter += 1
+                right_rep_data["right_counter"] = right_counter
+                right_rep_data["right_stage"] = right_stage                    
 
-                cv2.putText(image, f'Left: {left_counter}', (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-                cv2.putText(image, f'Right: {right_counter}', (400, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
 
-                mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
+                # cv2.putText(image, f'Left: {left_counter}', (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+                # cv2.putText(image, f'Right: {right_counter}', (400, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
 
+                mp_drawing.draw_landmarks(image, results.pose_landmarks,mp_pose.POSE_CONNECTIONS,
+                                    mp_drawing.DrawingSpec(color=(247,117,66), thickness=2 , circle_radius=2),
+                                    mp_drawing.DrawingSpec(color=(247,66,230), thickness=2 , circle_radius=2)
+                                    )   
             _, buffer = cv2.imencode('.jpg', image)
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
