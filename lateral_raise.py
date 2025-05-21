@@ -6,6 +6,13 @@ from playsound import playsound
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
 
+# Global variable to store rep data
+left_rep_data = {"left_counter": 0, "left_stage": None}
+right_rep_data = {"right_counter": 0, "right_stage": None}
+
+def get_reps():
+    return left_rep_data,right_rep_data
+
 def calculate_angle(a,b,c):
     a = np.array(a) #First point
     b = np.array(b) #Second point
@@ -19,6 +26,8 @@ def calculate_angle(a,b,c):
     return angle
 
 def process_video(cap):
+    global left_rep_data    
+    global right_rep_data      
     left_counter = 0
     right_counter = 0
     left_stage = None
@@ -64,8 +73,9 @@ def process_video(cap):
                 if left_angle <=90 and left_angle>80 and left_stage=="down":
                     left_stage ="up"
                     left_counter += 1
-                    print(left_counter)
             
+                left_rep_data["left_counter"] = left_counter
+                left_rep_data["left_stage"] = left_stage            
 
             # right_side    
                 # Get coordinates
@@ -86,8 +96,8 @@ def process_video(cap):
                 if right_angle <=90 and right_angle>80 and right_stage=="down":
                     right_stage ="up"
                     right_counter += 1
-                    print(right_counter)
-                
+                right_rep_data["right_counter"] = right_counter
+                right_rep_data["right_stage"] = right_stage                
 
             except:
                 pass
@@ -95,29 +105,29 @@ def process_video(cap):
             # Render curl left_counter
             # Setup status box
 
-            cv2.rectangle(image,(0,0),(255,73),(245,177,16),-1)
+            # cv2.rectangle(image,(0,0),(255,73),(245,177,16),-1)
 
             # Repdata
-            cv2.putText(image,'REPS',(15,20),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,0,0),1,cv2.LINE_AA)
-            cv2.putText(image,str(left_counter),(10,70),cv2.FONT_HERSHEY_SIMPLEX,2,(255,255,255),2,cv2.LINE_AA)
+            # cv2.putText(image,'REPS',(15,20),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,0,0),1,cv2.LINE_AA)
+            # cv2.putText(image,str(left_counter),(10,70),cv2.FONT_HERSHEY_SIMPLEX,2,(255,255,255),2,cv2.LINE_AA)
 
-            # Stagedata
-            cv2.putText(image,'STAGE',(85,20),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,0,0),1,cv2.LINE_AA)
-            cv2.putText(image,left_stage,(80,70),cv2.FONT_HERSHEY_SIMPLEX,2,(255,255,255),2,cv2.LINE_AA)
+            # # Stagedata
+            # cv2.putText(image,'STAGE',(85,20),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,0,0),1,cv2.LINE_AA)
+            # cv2.putText(image,left_stage,(80,70),cv2.FONT_HERSHEY_SIMPLEX,2,(255,255,255),2,cv2.LINE_AA)
 
             
             # Render curl right_counter
             # Setup status box
 
-            cv2.rectangle(image,(400,0),(655,73),(245,177,16),-1)
+            # cv2.rectangle(image,(400,0),(655,73),(245,177,16),-1)
 
             # Repdataq
-            cv2.putText(image,'REPS',(410,20),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,0,0),1,cv2.LINE_AA)
-            cv2.putText(image,str(right_counter),(410,70),cv2.FONT_HERSHEY_SIMPLEX,2,(255,255,255),2,cv2.LINE_AA)
+            # cv2.putText(image,'REPS',(410,20),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,0,0),1,cv2.LINE_AA)
+            # cv2.putText(image,str(right_counter),(410,70),cv2.FONT_HERSHEY_SIMPLEX,2,(255,255,255),2,cv2.LINE_AA)
 
             # Stagedata 
-            cv2.putText(image,'STAGE',(490,20),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,0,0),1,cv2.LINE_AA)
-            cv2.putText(image,right_stage,(480,70),cv2.FONT_HERSHEY_SIMPLEX,2,(255,255,255),2,cv2.LINE_AA)
+            # cv2.putText(image,'STAGE',(490,20),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,0,0),1,cv2.LINE_AA)
+            # cv2.putText(image,right_stage,(480,70),cv2.FONT_HERSHEY_SIMPLEX,2,(255,255,255),2,cv2.LINE_AA)
 
             
             mp_drawing.draw_landmarks(image, results.pose_landmarks,mp_pose.POSE_CONNECTIONS,
