@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Response, request
+from flask import Flask, render_template, Response,jsonify, request
 import cv2
 import importlib
 
@@ -26,6 +26,12 @@ def select_exercise():
     global selected_exercise
     selected_exercise = request.form['exercise']
     return '', 204  # No response needed
+
+@app.route('/get_reps')
+def get_reps():
+    global selected_exercise
+    exercise_module = importlib.import_module(selected_exercise)
+    return jsonify(exercise_module.get_reps())
 
 if __name__ == "__main__":
     app.run(debug=True)

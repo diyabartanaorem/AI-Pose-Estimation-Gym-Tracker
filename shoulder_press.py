@@ -20,7 +20,7 @@ def calculate_angle(a, b, c):
 
 def process_video(cap):
     global left_rep_data    
-    global right_rep_data    
+    global right_rep_data        
     left_counter, right_counter = 0, 0
     left_stage, right_stage = None, None
 
@@ -35,9 +35,6 @@ def process_video(cap):
             image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
             if results.pose_landmarks:
-                # print("Landmarks detected")
-                # print(f"Stage: {left_stage}, Reps: {left_counter}")
-                # print(f"Stage: {right_stage}, Reps: {right_counter}")                
                 landmarks = results.pose_landmarks.landmark
 
                 left_shoulder = [landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].x,
@@ -46,6 +43,8 @@ def process_video(cap):
                               landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].y]
                 left_wrist = [landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].x,
                               landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].y]
+                left_hip = [landmarks[mp_pose.PoseLandmark.LEFT_HIP.value].x,
+                              landmarks[mp_pose.PoseLandmark.LEFT_HIP.value].y]
 
                 right_shoulder = [landmarks[mp_pose.PoseLandmark.RIGHT_SHOULDER.value].x,
                                   landmarks[mp_pose.PoseLandmark.RIGHT_SHOULDER.value].y]
@@ -53,40 +52,38 @@ def process_video(cap):
                                landmarks[mp_pose.PoseLandmark.RIGHT_ELBOW.value].y]
                 right_wrist = [landmarks[mp_pose.PoseLandmark.RIGHT_WRIST.value].x,
                                landmarks[mp_pose.PoseLandmark.RIGHT_WRIST.value].y]
+                right_hip = [landmarks[mp_pose.PoseLandmark.RIGHT_HIP.value].x,
+                               landmarks[mp_pose.PoseLandmark.RIGHT_HIP.value].y]
 
-                left_angle = calculate_angle(left_shoulder, left_elbow, left_wrist)
-                right_angle = calculate_angle(right_shoulder, right_elbow, right_wrist)
+                left_elbow_angle = calculate_angle(left_shoulder, left_elbow, left_wrist)
+                left_shoulder_angle = calculate_angle(left_hip,left_shoulder, left_elbow)
+                right_elbow_angle = calculate_angle(right_shoulder, right_elbow, right_wrist)
+                right_shoulder_angle = calculate_angle(right_hip, right_shoulder, right_elbow)
 
-                if left_angle > 160:
+                if left_elbow_angle>80 and left_elbow_angle<100  and left_shoulder_angle>80 and left_shoulder_angle<100:
                     left_stage = "Down"
-                if left_angle < 40 and left_stage == "Down":
+                if left_elbow_angle>170 and left_elbow_angle<190  and left_shoulder_angle>170 and left_shoulder_angle<190 and left_stage == "Down":
                     left_stage = "Up"
                     left_counter += 1
-
-                # Update global rep data
                 left_rep_data["left_counter"] = left_counter
-                left_rep_data["left_stage"] = left_stage
+                left_rep_data["left_stage"] = left_stage                
 
-
-                if right_angle > 160:
+                if right_elbow_angle>80 and right_elbow_angle<100  and right_shoulder_angle>80 and right_shoulder_angle<100:
                     right_stage = "Down"
-                if right_angle < 40 and right_stage == "Down":
+                if left_elbow_angle>170 and left_elbow_angle<190  and left_shoulder_angle>170 and left_shoulder_angle<190 and right_stage== "Down":
                     right_stage = "Up"
                     right_counter += 1
-
-                # Update global rep data
                 right_rep_data["right_counter"] = right_counter
-                right_rep_data["right_stage"] = right_stage
+                right_rep_data["right_stage"] = right_stage                    
+
 
                 # cv2.putText(image, f'Left: {left_counter}', (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
                 # cv2.putText(image, f'Right: {right_counter}', (400, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
 
-                # mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
                 mp_drawing.draw_landmarks(image, results.pose_landmarks,mp_pose.POSE_CONNECTIONS,
                                     mp_drawing.DrawingSpec(color=(247,117,66), thickness=2 , circle_radius=2),
                                     mp_drawing.DrawingSpec(color=(247,66,230), thickness=2 , circle_radius=2)
-                                    )                
-
+                                    )   
             _, buffer = cv2.imencode('.jpg', image)
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
